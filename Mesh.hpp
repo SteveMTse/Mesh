@@ -2,6 +2,7 @@
 #define _MESH_HPP
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 using namespace std;
 
@@ -52,6 +53,14 @@ class Mesh {
             this -> elements = new Polygon[NElt];
         }
 
+        Mesh(string filename) {
+            ifstream data;
+            data.open(filename, ios::in);
+            if(data.is_open()) {
+                //TODO;
+            }
+        }
+
         void set_node(int index, double x, double y) {
             (this -> nodes[index]).index = index + 1;
             (this -> nodes[index]).x = x;
@@ -78,9 +87,9 @@ class Mesh {
         }
 
         ~Mesh() {
-            delete[] this -> nodes;
-            delete[] this -> elements;
-            delete[] this -> boundary_condition;
+            if(this -> nodes != NULL) delete[] this -> nodes;
+            if(this -> elements != NULL) delete[] this -> elements;
+            if(this -> boundary_condition != NULL) delete[] this -> boundary_condition;
         }
 };
 
