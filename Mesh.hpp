@@ -16,6 +16,13 @@ struct Polygon {
     vector<int> vertices;
 };
 
+template <typename A, typename B = A, typename C = B>
+struct triplet {
+    A first;
+    B second;
+    C third;
+};
+
 class Mesh {
     private:
         //Domain
@@ -30,6 +37,8 @@ class Mesh {
         Point* nodes = NULL;
 
         Polygon* elements = NULL;
+
+        triplet<int>* boundary_condition = NULL;
 
     public:
         Mesh(double xl, double xr, double yb, double yt, int NNode, int NElt) {
@@ -58,9 +67,20 @@ class Mesh {
             (this -> elements[index]).vertices.push_back(elt);
         }
 
+        void init_boundary_condition(int size) {
+            this -> boundary_condition = new triplet<int>[size];
+        }
+
+        void set_boundary_condition(int index, int eltID, int faceID) {
+            (this -> boundary_condition[index]).first = index + 1;
+            (this -> boundary_condition[index]).second = eltID;
+            (this -> boundary_condition[index]).third = faceID;
+        }
+
         ~Mesh() {
             delete[] this -> nodes;
             delete[] this -> elements;
+            delete[] this -> boundary_condition;
         }
 };
 
