@@ -6,6 +6,7 @@
 using namespace std;
 
 struct Point {
+    int index;
     double x;
     double y;
 };
