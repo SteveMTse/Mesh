@@ -39,7 +39,8 @@ class Mesh {
 
         Polygon* elements = NULL;
 
-        triplet<int>* boundary_condition = NULL;
+        triplet<int>* dirichlet = NULL;
+        triplet<int>* neumann = NULL;
 
     public:
         Mesh(double xl, double xr, double yb, double yt, int NNode, int NElt) {
@@ -76,20 +77,31 @@ class Mesh {
             (this -> elements[index]).vertices.push_back(elt);
         }
 
-        void init_boundary_condition(int size) {
-            this -> boundary_condition = new triplet<int>[size];
+        void init_dirichlet(int size) {
+            this -> dirichlet = new triplet<int>[size];
         }
 
-        void set_boundary_condition(int index, int eltID, int faceID) {
-            (this -> boundary_condition[index]).first = index + 1;
-            (this -> boundary_condition[index]).second = eltID;
-            (this -> boundary_condition[index]).third = faceID;
+        void set_dirichlet(int index, int eltID, int faceID) {
+            (this -> dirichlet[index]).first = index + 1;
+            (this -> dirichlet[index]).second = eltID;
+            (this -> dirichlet[index]).third = faceID;
+        }
+
+        void init_neumann(int size) {
+            this -> neumann = new triplet<int>[size];
+        }
+
+        void set_neumann(int index, int eltID, int faceID) {
+            (this -> neumann[index]).first = index + 1;
+            (this -> neumann[index]).second = eltID;
+            (this -> neumann[index]).third = faceID;
         }
 
         ~Mesh() {
             if(this -> nodes != NULL) delete[] this -> nodes;
             if(this -> elements != NULL) delete[] this -> elements;
-            if(this -> boundary_condition != NULL) delete[] this -> boundary_condition;
+            if(this -> dirichlet != NULL) delete[] this -> dirichlet;
+            if(this -> neumann != NULL) delete[] this -> neumann;
         }
 };
 
